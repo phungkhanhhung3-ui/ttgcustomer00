@@ -162,7 +162,9 @@ export default function App() {
 
   const stats = useMemo(() => {
     const count = reviews.length || 1;
-    const avg = (key) => (reviews.reduce((sum, r) => sum + Number(r[key] || 0), 0) / count).toFixed(2);
+    const avg = (key) =>
+      (reviews.reduce((sum, r) => sum + Number(r[key] || 0), 0) / count).toFixed(2);
+
     return {
       total: reviews.length,
       deliveryTime: avg("deliveryTime"),
@@ -176,12 +178,24 @@ export default function App() {
   const urgentReviews = filteredReviews.filter((r) => Number(r.overall) <= 3);
 
   const handleLookupOrder = () => {
-    const found = demoOrders.find((o) => o.orderCode.toLowerCase() === form.orderCode.trim().toLowerCase());
+    const found = demoOrders.find(
+      (o) => o.orderCode.toLowerCase() === form.orderCode.trim().toLowerCase()
+    );
+
     if (found) {
-      setForm((prev) => ({ ...prev, orderCode: found.orderCode, status: found.status }));
-      setLookupMessage(Đã tìm thấy mã đơn ${found.orderCode}. Khách hàng có thể tự nhập tên và gửi đánh giá.);
+      setForm((prev) => ({
+        ...prev,
+        orderCode: found.orderCode,
+        status: found.status,
+      }));
+
+      setLookupMessage(
+        `Đã tìm thấy mã đơn ${found.orderCode}. Khách hàng có thể tự nhập tên và gửi đánh giá.`
+      );
     } else {
-      setLookupMessage("Không tìm thấy mã đơn hàng trong danh sách demo. Bạn vẫn có thể tự nhập tên và gửi đánh giá.");
+      setLookupMessage(
+        "Không tìm thấy mã đơn hàng trong danh sách demo. Bạn vẫn có thể tự nhập tên và gửi đánh giá."
+      );
     }
   };
 
@@ -195,7 +209,7 @@ export default function App() {
 
     const newReview = {
       ...form,
-      orderCode: form.orderCode.trim() || TTG-NEW-${Date.now().toString().slice(-6)},
+      orderCode: form.orderCode.trim() || `TTG-NEW-${Date.now().toString().slice(-6)}`,
       customerName: form.customerName.trim(),
       note: form.note.trim(),
     };
@@ -232,8 +246,9 @@ export default function App() {
             </div>
             <h1>Ứng dụng đánh giá chất lượng dịch vụ giao nhận khách hàng</h1>
             <p className="lead">
-              Bản demo cho phép khách hàng tự nhập tên, mã đơn hàng, chấm điểm dịch vụ, gửi góp ý và hỗ trợ doanh nghiệp
-              theo dõi phản hồi, thống kê chất lượng cũng như cảnh báo các đánh giá thấp để xử lý kịp thời.
+              Bản demo cho phép khách hàng tự nhập tên, mã đơn hàng, chấm điểm dịch vụ, gửi góp ý
+              và hỗ trợ doanh nghiệp theo dõi phản hồi, thống kê chất lượng cũng như cảnh báo các
+              đánh giá thấp để xử lý kịp thời.
             </p>
           </div>
 
@@ -243,7 +258,9 @@ export default function App() {
             <div className="feature-list">
               <FeatureItem Icon={Package}>Khách hàng tự nhập tên, mã đơn hàng và gửi đánh giá</FeatureItem>
               <FeatureItem Icon={Star}>Chấm điểm 4 tiêu chí dịch vụ theo thang 1–5</FeatureItem>
-              <FeatureItem Icon={MessageSquare}>Gửi góp ý và hiển thị ngay trong danh sách phản hồi</FeatureItem>
+              <FeatureItem Icon={MessageSquare}>
+                Gửi góp ý và hiển thị ngay trong danh sách phản hồi
+              </FeatureItem>
               <FeatureItem Icon={AlertTriangle}>Cảnh báo phản hồi thấp cần ưu tiên xử lý</FeatureItem>
               <FeatureItem Icon={QrCode}>Gợi ý tích hợp QR đánh giá sau giao hàng</FeatureItem>
             </div>
@@ -256,14 +273,21 @@ export default function App() {
           <StatCard title="Thái độ nhân viên" value={stats.staffAttitude} subtitle="Điểm trung bình / 5" Icon={Smile} />
           <StatCard title="An toàn hàng hóa" value={stats.cargoSafety} subtitle="Điểm trung bình / 5" Icon={ShieldCheck} />
           <StatCard title="Hài lòng chung" value={stats.overall} subtitle="Điểm trung bình / 5" Icon={Star} />
-          <StatCard title="Phản hồi cần xử lý" value={stats.lowScoreCount} subtitle="Đánh giá từ 3 sao trở xuống" Icon={AlertTriangle} />
+          <StatCard
+            title="Phản hồi cần xử lý"
+            value={stats.lowScoreCount}
+            subtitle="Đánh giá từ 3 sao trở xuống"
+            Icon={AlertTriangle}
+          />
         </div>
 
         <div className="main-grid">
           <div className="left-column">
             <div className="card">
               <div className="section-title">Biểu mẫu đánh giá dịch vụ</div>
-              <div className="subtle small">Khách hàng có thể tự nhập thông tin và gửi đánh giá sau khi sử dụng dịch vụ</div>
+              <div className="subtle small">
+                Khách hàng có thể tự nhập thông tin và gửi đánh giá sau khi sử dụng dịch vụ
+              </div>
 
               <form className="form-grid" onSubmit={handleSubmit}>
                 <div className="two-col">
@@ -296,7 +320,10 @@ export default function App() {
 
                 <div>
                   <label>Trạng thái đơn hàng</label>
-                  <select value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })}>
+                  <select
+                    value={form.status}
+                    onChange={(e) => setForm({ ...form, status: e.target.value })}
+                  >
                     {statusOptions.map((status) => (
                       <option key={status} value={status}>
                         {status}
@@ -314,14 +341,20 @@ export default function App() {
                         </div>
                         <div className="metric-label">{label}</div>
                       </div>
-                      <StarRating value={form[key]} onChange={(value) => setForm({ ...form, [key]: value })} />
+                      <StarRating
+                        value={form[key]}
+                        onChange={(value) => setForm({ ...form, [key]: value })}
+                      />
                     </div>
                   </div>
                 ))}
 
                 <div>
                   <label>Loại vấn đề phát sinh</label>
-                  <select value={form.issueType} onChange={(e) => setForm({ ...form, issueType: e.target.value })}>
+                  <select
+                    value={form.issueType}
+                    onChange={(e) => setForm({ ...form, issueType: e.target.value })}
+                  >
                     <option>Không có</option>
                     <option>Giao hàng chậm</option>
                     <option>Hàng hóa hư hỏng</option>
@@ -357,7 +390,9 @@ export default function App() {
               <div className="subtle small">Gợi ý màn hình dành cho bộ phận chăm sóc khách hàng</div>
               <div className="feature-list">
                 <FeatureItem Icon={ClipboardList}>Theo dõi lịch sử đánh giá theo từng đơn hàng</FeatureItem>
-                <FeatureItem Icon={AlertTriangle}>Đánh dấu các phản hồi dưới 3 sao để ưu tiên xử lý</FeatureItem>
+                <FeatureItem Icon={AlertTriangle}>
+                  Đánh dấu các phản hồi dưới 3 sao để ưu tiên xử lý
+                </FeatureItem>
                 <FeatureItem Icon={BarChart3}>Tổng hợp báo cáo theo tuần / tháng</FeatureItem>
                 <FeatureItem Icon={QrCode}>Tích hợp mã QR sau giao hàng để tăng tỷ lệ phản hồi</FeatureItem>
               </div>
@@ -369,7 +404,9 @@ export default function App() {
               <div className="list-header">
                 <div>
                   <div className="section-title">Danh sách phản hồi gần nhất</div>
-                  <div className="subtle small">Doanh nghiệp có thể theo dõi phản hồi để cải thiện dịch vụ</div>
+                  <div className="subtle small">
+                    Doanh nghiệp có thể theo dõi phản hồi để cải thiện dịch vụ
+                  </div>
                 </div>
 
                 <div className="search-wrap">
@@ -417,7 +454,9 @@ export default function App() {
 
             <div className="card">
               <div className="section-title">Cảnh báo phản hồi cần ưu tiên xử lý</div>
-              <div className="subtle small">Các đánh giá thấp giúp doanh nghiệp theo dõi và liên hệ lại với khách hàng</div>
+              <div className="subtle small">
+                Các đánh giá thấp giúp doanh nghiệp theo dõi và liên hệ lại với khách hàng
+              </div>
 
               <div className="urgent-list">
                 {urgentReviews.length > 0 ? (
